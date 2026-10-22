@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-mode="focus">
+  <header class="topbar">
+    <h1 class="brand">⏳ Study Timer</h1>
+    <div class="topbar-actions">
+      <button id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+      <button id="settingsBtn" class="icon-btn" title="Settings" aria-label="Open settings">⚙️</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card timer-card">
+      <nav class="modes" role="tablist">
+        <button class="mode-btn active" data-mode="focus" role="tab">Focus</button>
+        <button class="mode-btn" data-mode="short" role="tab">Short Break</button>
+        <button class="mode-btn" data-mode="long" role="tab">Long Break</button>
+      </nav>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ring-bg" cx="110" cy="110" r="100" />
+          <circle id="ringProgress" class="ring-progress" cx="110" cy="110" r="100" />
+        </svg>
+        <div class="ring-content">
+          <div id="time" class="time" aria-live="polite">25:00</div>
+          <div id="currentTask" class="current-task">Pick a task to focus on</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="resetBtn" class="ctrl-btn secondary" title="Reset (R)">↺</button>
+        <button id="startBtn" class="ctrl-btn primary" title="Start / Pause (Space)">Start</button>
+        <button id="skipBtn" class="ctrl-btn secondary" title="Skip (S)">⏭</button>
+      </div>
+
+      <p id="sessionInfo" class="session-info">Session #1</p>
+    </section>
+
+    <section class="card tasks-card">
+      <div class="card-head">
+        <h2>Tasks</h2>
+        <button id="clearDoneBtn" class="link-btn">Clear done</button>
+      </div>
+      <form id="taskForm" class="task-form">
+        <input id="taskInput" type="text" placeholder="What are you studying?" maxlength="80" required />
+        <input id="taskEst" type="number" min="1" max="20" value="1" title="Estimated sessions" />
+        <button type="submit" class="add-btn">Add</button>
+      </form>
+      <ul id="taskList" class="task-list"></ul>
+      <p id="emptyTasks" class="empty">No tasks yet. Add one above.</p>
+    </section>
+
+    <section class="card stats-card">
+      <div class="card-head">
+        <h2>Today</h2>
+        <button id="resetStatsBtn" class="link-btn">Reset</button>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <span id="statSessions" class="stat-num">0</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat">
+          <span id="statMinutes" class="stat-num">0</span>
+          <span class="stat-label">Focus min</span>
+        </div>
+        <div class="stat">
+          <span id="statStreak" class="stat-num">0</span>
+          <span class="stat-label">Day streak</span>
+        </div>
+      </div>
+      <div class="goal">
+        <div class="goal-head">
+          <span>Daily goal</span>
+          <span id="goalText">0 / 8 sessions</span>
+        </div>
+        <div class="goal-bar"><div id="goalFill" class="goal-fill"></div></div>
+      </div>
+      <div id="weekChart" class="week-chart" aria-label="Focus minutes over the last 7 days"></div>
+    </section>
+  </main>
+
+  <dialog id="settingsDialog" class="dialog">
+    <form method="dialog" id="settingsForm">
+      <h2>Settings</h2>
+      <fieldset>
+        <legend>Durations (minutes)</legend>
+        <label>Focus <input type="number" name="focus" min="1" max="120" /></label>
+        <label>Short break <input type="number" name="short" min="1" max="60" /></label>
+        <label>Long break <input type="number" name="long" min="1" max="90" /></label>
+      </fieldset>
+      <fieldset>
+        <legend>Flow</legend>
+        <label>Long break every <input type="number" name="longEvery" min="2" max="10" /> sessions</label>
+        <label>Daily goal <input type="number" name="dailyGoal" min="1" max="30" /> sessions</label>
+        <label class="check"><input type="checkbox" name="autoStart" /> Auto-start next session</label>
+      </fieldset>
+      <fieldset>
+        <legend>Alerts</legend>
+        <label class="check"><input type="checkbox" name="sound" /> Play sound</label>
+        <label class="check"><input type="checkbox" name="notify" /> Desktop notifications</label>
+      </fieldset>
+      <div class="dialog-actions">
+        <button value="cancel" class="ctrl-btn secondary small">Cancel</button>
+        <button value="save" id="saveSettings" class="ctrl-btn primary small">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="footer">
+    <kbd>Space</kbd> start/pause · <kbd>R</kbd> reset · <kbd>S</kbd> skip
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
